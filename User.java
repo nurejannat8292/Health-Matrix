@@ -18,13 +18,16 @@ public class User {
                     height = Double.parseDouble(parts[3]);
                     isRegistered = true;
                 }
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void saveData() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("health_data.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("health_data.txt",true))) {
             writer.write(name + "," + password + "," + weight + "," + height);
+            writer.newLine();
         } catch (IOException e) {}
     }
 
