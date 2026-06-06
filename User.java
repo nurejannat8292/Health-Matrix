@@ -31,8 +31,6 @@ public class User {
         } catch (IOException e) {}
     }
 
-    //Registration input
-
     public void register(Scanner sc) {
         System.out.println("\n\t\t\t--- Registration ---");
         System.out.print("\t\t\tEnter Name: "); 
@@ -49,8 +47,6 @@ public class User {
         saveData();
         System.out.println("\t\t\tAccount created successfully!");
     }
-    
-    //Login input
     
     public boolean login(Scanner sc) {
         System.out.println("\n\t\t\t--- Login ---");

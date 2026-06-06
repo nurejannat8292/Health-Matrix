@@ -53,6 +53,8 @@ public class HealthMatrix_1 {
 
             if (c == 1) showBMI(user);
             else if (c == 2) medicineReminder(sc);
+            else if (c == 3) bloodPressureTracker(sc, user);
+           else if (c == 4) foodAndExerciseGuides(sc);    
             else if (c == 6) break;
             else System.out.println(ANSI_YELLOW + "\t\t\t[ INFO ] This feature is under development." + ANSI_RESET);
         }
@@ -169,5 +171,108 @@ public class HealthMatrix_1 {
             System.out.println("\t\t\t>> Reduce junk food and sugary items; control portion size\n\t\t\t>> Increase exercise and daily movement (walking, jogging)");
         else System.out.println(">> Follow a strict healthy diet plan (low fat, low sugar)\n\t\t\t>> Consult a doctor and do regular intensive physical activity and Avoid all processed foods.");
         System.out.println("\t\t\t-----------------------------------------");
+    }
+
+
+// 3.Bp
+
+    static void bloodPressureTracker(Scanner sc, User user) {
+        System.out.println(ANSI_CYAN + "\n\t\t\t--- BLOOD PRESSURE TRACKER ---" + ANSI_RESET);
+        System.out.print("\t\t\tEnter Systolic BP (top number 120): ");
+        int systolic = sc.nextInt();
+        System.out.print("\t\t\tEnter Diastolic BP (bottom number 80): ");
+        int diastolic = sc.nextInt();
+
+        String status;
+
+         if (systolic < 120 && diastolic < 80) {
+    status = "Normal";
+} 
+         else if ((systolic >= 120 && systolic <= 129) && diastolic < 80) {
+         status = "Elevated";
+         } 
+         else if ((systolic >= 130 && systolic <= 139) || (diastolic >= 80 && diastolic <= 89)) {
+         status = "High Blood Pressure (Stage 1)";
+         } 
+         else {
+    
+         status = "High Blood Pressure (Stage 2 / Crisis)";
+         }         
+
+        System.out.println("\t\t\t-----------------------------------------");
+        System.out.println("\t\t\t Reading Result: " + ANSI_YELLOW + status + ANSI_RESET);
+        System.out.println("\t\t\t-----------------------------------------");
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("bp_history.txt", true))) {
+            writer.write(systolic + "," + diastolic + "," + status + "," + java.time.LocalDate.now() + "\n");
+            System.out.println("\t\t\t[ SUCCESS ] Reading saved to bp_history.txt!");
+        } catch (IOException e) {
+            System.out.println("\t\t\t[ ERROR ] Failed to save data to file.");
+        }
+    }
+
+// 4.food guide
+
+    static void foodAndExerciseGuides(Scanner sc) {
+        System.out.println(ANSI_CYAN + "\n\t\t\t--- NUTRITION & EXERCISE GUIDE ---" + ANSI_RESET);
+
+        System.out.print("\t\t\tEnter Weight (kg): ");
+        double manualWeight = sc.nextDouble();
+        System.out.print("\t\t\tEnter Height (meters): ");
+        double manualHeight = sc.nextDouble();
+
+        double bmi = manualWeight / (manualHeight * manualHeight);
+        String category = (bmi < 18.5) ? "Underweight" : (bmi < 25) ? "Normal" : (bmi < 30) ? "Overweight" : "Obese";
+
+        System.out.println("\t\t\t===============================================================");
+        System.out.printf("\t\t\t[ Calculated Metrics ] Target BMI: %.2f (%s)\n", bmi, category);
+        System.out.println("\t\t\t===============================================================");
+       
+        if (category.equals("Underweight")) {
+            System.out.println("\t\t\t" + ANSI_YELLOW + " NUTRITION OBJECTIVE: CALORIC SURPLUS & MUSCLE GAIN" + ANSI_RESET);
+            System.out.println("\t\t\t   DAILY TARGETS : Focus on energy-dense, high-protein whole foods.");
+            System.out.println("\t\t\t   MACRO FOCUS   : Milk, nuts, peanut butter, eggs, and lean chicken.");
+            System.out.println("\t\t\t   MEAL TIMING   : Eat 5-6 smaller meals per day; never skip breakfast.");
+            System.out.println("\t\t\t   AVOID         : Empty calories (soda, chips) and excessive running.");
+            System.out.println("\t\t\t---------------------------------------------------------------");
+            System.out.println("\t\t\t" + ANSI_GREEN + " EXERCISE PROTOCOL: HYPERTROPHY & STRENGTH" + ANSI_RESET);
+            System.out.println("\t\t\t   STRATEGY     : 30-45 mins of progressive resistance or weight training.");
+            System.out.println("\t\t\t   FREQUENCY    : 3 days per week to allow deep muscle recovery.");
+        } 
+        else if (category.equals("Normal")) {
+            System.out.println("\t\t\t" + ANSI_YELLOW + " NUTRITION OBJECTIVE: FITNESS MAINTENANCE & ENERGIZATION" + ANSI_RESET);
+            System.out.println("\t\t\t   DAILY TARGETS : Clean, evenly balanced micronutrient distribution.");
+            System.out.println("\t\t\t   MACRO FOCUS   : Leafy greens, colorful vegetables, fish, and oats.");
+            System.out.println("\t\t\t   HYDRATION    : Drink 1 glass of water every 2 hours (2.5 - 3L total).");
+            System.out.println("\t\t\t   AVOID         : Late-night heavy snacking and prolonged sitting gaps.");
+            System.out.println("\t\t\t---------------------------------------------------------------");
+            System.out.println("\t\t\t" + ANSI_GREEN + " EXERCISE PROTOCOL: FUNCTIONAL ENDURANCE" + ANSI_RESET);
+            System.out.println("\t\t\t   STRATEGY     : Combination of brisk walking, cycling, or swimming.");
+            System.out.println("\t\t\t   FREQUENCY    : 150 minutes of active movement spread across the week.");
+        } 
+        else if (category.equals("Overweight")) {
+            System.out.println("\t\t\t" + ANSI_YELLOW + " NUTRITION OBJECTIVE: CALORIC DEFICIT & METABOLIC RESET" + ANSI_RESET);
+            System.out.println("\t\t\t   DAILY TARGETS : High fiber, low-carb intake to maximize fat burning.");
+            System.out.println("\t\t\t   MACRO FOCUS   : Salads, boiled lentils, egg whites, and citrus fruits.");
+            System.out.println("\t\t\t   PORTION CTRL  : Use smaller plates; reduce rice/roti intake by 30%.");
+            System.out.println("\t\t\t   AVOID         : White sugar, carbonated beverages, and deep-fried items.");
+            System.out.println("\t\t\t---------------------------------------------------------------");
+            System.out.println("\t\t\t" + ANSI_GREEN + " EXERCISE PROTOCOL: FAT LOSS & CARDIOVASCULAR" + ANSI_RESET);
+            System.out.println("\t\t\t   STRATEGY     : 40 mins of steady brisk walking, jogging, or skipping.");
+            System.out.println("\t\t\t   FREQUENCY    : 4-5 days per week to optimize caloric expenditure.");
+        } 
+        else {
+            System.out.println("\t\t\t" + ANSI_YELLOW + " NUTRITION OBJECTIVE: THERAPEUTIC WEIGHT REDUCTION" + ANSI_RESET);
+            System.out.println("\t\t\t   DAILY TARGETS : Low-fat, zero-refined-sugar nutritional layout.");
+            System.out.println("\t\t\t   MACRO FOCUS   : High fiber vegetables, cucumbers, clear soups, green tea.");
+            System.out.println("\t\t\t   INTERVENTION  : Intermittent fasting layout or strict meal windowing.");
+            System.out.println("\t\t\t   AVOID         : All fast food, bakery pastries, bakery loaves, and ghee.");
+            System.out.println("\t\t\t---------------------------------------------------------------");
+            System.out.println("\t\t\t" + ANSI_GREEN + " EXERCISE PROTOCOL: LOW-IMPACT KINETICS" + ANSI_RESET);
+            System.out.println("\t\t\t   STRATEGY     : Low-impact walking or water aerobics (protects knee joints).");
+            System.out.println("\t\t\t   FREQUENCY    : Start with 20 mins daily, gradually scaling up intensity.");
+        }
+        
+        System.out.println("\t\t\t===============================================================");
     }
 }

@@ -14,7 +14,6 @@ public class SuccessDialog extends JDialog {
         panel.setLayout(null);
         getContentPane().add(panel);
 
-        // green sign
         JLabel checkIcon = new JLabel("<html><font color='green'>✓</font></html>");
         checkIcon.setFont(new Font("SansSerif", Font.BOLD, 60));
         checkIcon.setBounds(145, 20, 60, 70);
